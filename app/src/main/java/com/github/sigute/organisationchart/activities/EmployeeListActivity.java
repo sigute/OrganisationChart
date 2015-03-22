@@ -13,6 +13,7 @@ import com.github.sigute.organisationchart.organisation.Employee;
 public class EmployeeListActivity extends ActionBarActivity
         implements EmployeeListFragment.Callbacks
 {
+    //TODO decide what to do about tablet mode!
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
