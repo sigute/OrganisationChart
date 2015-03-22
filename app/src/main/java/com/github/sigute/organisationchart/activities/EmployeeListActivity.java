@@ -40,7 +40,6 @@ public class EmployeeListActivity extends ActionBarActivity
     @Override
     public void onItemSelected(Employee employee)
     {
-        //TODO add employee image
         if (mTwoPane)
         {
             Bundle arguments = new Bundle();

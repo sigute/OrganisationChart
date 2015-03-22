@@ -11,8 +11,24 @@ public class Organisation
     private Employee ceo;
     private List<Team> teams;
 
+    @SuppressWarnings("unused")
+    private Organisation()
+    {
+        //should not be called directly
+    }
+
     public Organisation(Employee ceo, List<Team> teams)
     {
+        if (ceo == null)
+        {
+            throw new IllegalArgumentException("Organisation must have ceo!");
+        }
+
+        if (teams == null || teams.size() == 0)
+        {
+            throw new IllegalArgumentException("Organisation must have teams!");
+        }
+
         this.ceo = ceo;
         this.teams = teams;
     }

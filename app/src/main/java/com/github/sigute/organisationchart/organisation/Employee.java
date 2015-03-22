@@ -10,10 +10,8 @@ public class Employee
     private String lastName;
     private String role;
     private String imageUrl;
-    private String storedImageName;
     boolean teamLeader;
     boolean ceo;
-    //TODO deal with linking in profile image
 
     @SuppressWarnings("unused")
     private Employee()

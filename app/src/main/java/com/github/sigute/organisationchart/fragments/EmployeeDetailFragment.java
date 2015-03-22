@@ -13,8 +13,6 @@ import com.github.sigute.organisationchart.utils.Storage;
 
 public class EmployeeDetailFragment extends Fragment
 {
-    //TODO also add image!
-
     public class EmployeeKeys
     {
         public static final String NAME = "EMPLOYEE_NAME";

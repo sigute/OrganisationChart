@@ -182,7 +182,6 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
         for (Team team : organisation.getTeams())
         {
             listItems.add(new EmployeeListItemHeader(team.getName()));
-            //TODO highlight team leader
             listItems.add(new EmployeeListItemEmployee(team.getTeamLeader()));
             for (Employee teamMember : team.getTeamMembers())
             {

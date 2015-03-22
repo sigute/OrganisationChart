@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by spikereborn on 22/03/2015.
@@ -27,9 +28,14 @@ public class Storage
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
         }
-        catch (Exception e)
+        catch (FileNotFoundException e)
         {
-            //TODO handle this!
+            //TODO handle this
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            //TODO handle this
             e.printStackTrace();
         }
     }

@@ -1,7 +1,5 @@
 package com.github.sigute.organisationchart.organisation;
 
-import com.github.sigute.organisationchart.organisation.Employee;
-
 import java.util.List;
 
 /**
@@ -22,6 +20,12 @@ public class Team
     public Team(String teamName, List<Employee> teamMembers)
     {
         this.teamName = teamName;
+
+        if (teamMembers == null || teamMembers.size() == 0)
+        {
+            throw new IllegalArgumentException("Team must have members!");
+        }
+
         for (Employee employee : teamMembers)
         {
             if (employee.isTeamLeader())
@@ -34,7 +38,6 @@ public class Team
 
         if (teamLeader == null)
         {
-            //TODO review this
             throw new IllegalStateException("Team must have a leader!");
         }
 
