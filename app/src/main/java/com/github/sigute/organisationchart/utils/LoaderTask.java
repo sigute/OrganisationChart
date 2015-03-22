@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.support.v4.util.Pair;
 
 import com.github.sigute.organisationchart.R;
+import com.github.sigute.organisationchart.exceptions.DatabaseInsertException;
+import com.github.sigute.organisationchart.exceptions.DatabaseSelectException;
 import com.github.sigute.organisationchart.exceptions.ImageSaveException;
 import com.github.sigute.organisationchart.exceptions.NetworkIOException;
 import com.github.sigute.organisationchart.exceptions.NetworkUnavailableException;
@@ -51,7 +53,7 @@ public class LoaderTask extends AsyncTask<Void, Void, Pair<Organisation, String>
     @Override
     protected Pair<Organisation, String> doInBackground(Void[] voids)
     {
-        //TODO before trying online, see whether can retrieve organisation from database
+        Organisation organisation = null;
 
         String jsonString = null;
         try
@@ -60,30 +62,55 @@ public class LoaderTask extends AsyncTask<Void, Void, Pair<Organisation, String>
         }
         catch (NetworkUnavailableException e)
         {
+            organisation = organisationFromDatabase();
+            if (organisation != null)
+            {
+                return new Pair<>(organisation, null);
+            }
             return new Pair<>(null, context.getString(R.string.error_network_unavailable));
         }
         catch (ServerException e)
         {
+            organisation = organisationFromDatabase();
+            if (organisation != null)
+            {
+                return new Pair<>(organisation, null);
+            }
             return new Pair<>(null, context.getString(R.string.error_server));
         }
         catch (NetworkIOException e)
         {
+            organisation = organisationFromDatabase();
+            if (organisation != null)
+            {
+                return new Pair<>(organisation, null);
+            }
             return new Pair<>(null, context.getString(R.string.error_network_io));
         }
         catch (ServerResponseReadException e)
         {
+            organisation = organisationFromDatabase();
+            if (organisation != null)
+            {
+                return new Pair<>(organisation, null);
+            }
             return new Pair<>(null, context.getString(R.string.error_server_response_read));
         }
 
-        Organisation organisation = null;
         try
         {
             organisation = JsonParser.parseOutJsonData(jsonString);
         }
         catch (JSONException e)
         {
+            organisation = organisationFromDatabase();
+            if (organisation != null)
+            {
+                return new Pair<>(organisation, null);
+            }
             return new Pair<>(null, context.getString(R.string.error_json_parsing));
         }
+
         try
         {
             setEmployeeImages(organisation);
@@ -92,8 +119,27 @@ public class LoaderTask extends AsyncTask<Void, Void, Pair<Organisation, String>
         {
             //could not retrieve all photos. Not ideal, but have placeholder picture, so will just go with that... Employee data is still valid.
         }
-        DatabaseHelper.getInstance(context).insertOrganisation(organisation);
+        try
+        {
+            DatabaseHelper.getInstance(context).insertOrganisation(organisation);
+        }
+        catch (DatabaseInsertException e)
+        {
+            // insert failed. I guess we are not storing data offline this time...
+        }
         return new Pair<>(organisation, null);
+    }
+
+    private Organisation organisationFromDatabase()
+    {
+        try
+        {
+            return DatabaseHelper.getInstance(context).selectOrganisation();
+        }
+        catch (DatabaseSelectException e)
+        {
+            return null;
+        }
     }
 
     private void setEmployeeImages(Organisation organisation)

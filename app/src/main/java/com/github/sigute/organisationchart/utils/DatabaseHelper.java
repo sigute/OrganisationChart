@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.github.sigute.organisationchart.exceptions.DatabaseInsertException;
+import com.github.sigute.organisationchart.exceptions.DatabaseSelectException;
 import com.github.sigute.organisationchart.organisation.Employee;
 import com.github.sigute.organisationchart.organisation.Organisation;
 import com.github.sigute.organisationchart.organisation.Team;
@@ -118,18 +120,30 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
     }
 
-    public void insertOrganisation(Organisation organisation)
+    public void insertOrganisation(Organisation organisation) throws DatabaseInsertException
     {
         SQLiteDatabase database = instance.getWritableDatabase();
 
-        insertAllEmployees(organisation, database);
-        insertOrganisationTable(organisation, database);
-        insertTeamsAndTeamMembers(organisation, database);
+        database.execSQL("DROP TABLE IF EXISTS " + TableNames.ORGANISATION);
+        database.execSQL("DROP TABLE IF EXISTS " + TableNames.EMPLOYEES);
+        database.execSQL("DROP TABLE IF EXISTS " + TableNames.TEAMS);
+        database.execSQL("DROP TABLE IF EXISTS " + TableNames.TEAM_MEMBERS);
+        onCreate(database);
 
-        database.close();
+        try
+        {
+            insertAllEmployees(organisation, database);
+            insertOrganisationTable(organisation, database);
+            insertTeamsAndTeamMembers(organisation, database);
+        }
+        finally
+        {
+            database.close();
+        }
     }
 
     private void insertTeamsAndTeamMembers(Organisation organisation, SQLiteDatabase database)
+            throws DatabaseInsertException
     {
         List<Team> allTeams = organisation.getTeams();
         for (Team team : allTeams)
@@ -143,33 +157,34 @@ public class DatabaseHelper extends SQLiteOpenHelper
     }
 
     private void insertTeamMembers(List<Employee> teamMembers, String teamName,
-            SQLiteDatabase database)
+            SQLiteDatabase database) throws DatabaseInsertException
     {
         for (Employee teamMember : teamMembers)
         {
             ContentValues values = new ContentValues();
             values.put(TeamMembersTableColumns.TEAM_NAME, teamName);
             values.put(TeamMembersTableColumns.EMPLOYEE_ID, teamMember.getId());
-            long result = database.insert(TableNames.TEAMS, null, values);
+            long result = database.insert(TableNames.TEAM_MEMBERS, null, values);
             if (result == -1)
             {
-                //TODO error occured!! do something!
+                throw new DatabaseInsertException("Team member insert failed");
             }
         }
     }
 
-    private void insertTeamName(String name, SQLiteDatabase database)
+    private void insertTeamName(String name, SQLiteDatabase database) throws DatabaseInsertException
     {
         ContentValues values = new ContentValues();
         values.put(TeamsTableColumns.NAME, name);
         long result = database.insert(TableNames.TEAMS, null, values);
         if (result == -1)
         {
-            //TODO error occured!! do something!
+            throw new DatabaseInsertException("Team name insert failed");
         }
     }
 
     private void insertOrganisationTable(Organisation organisation, SQLiteDatabase database)
+            throws DatabaseInsertException
     {
         ContentValues values = new ContentValues();
         values.put(OrganisationTableColumns.CEO_ID, organisation.getCEO().getId());
@@ -177,11 +192,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
         long result = database.insert(TableNames.ORGANISATION, null, values);
         if (result == -1)
         {
-            //TODO error occured!! do something!
+            throw new DatabaseInsertException("Organisation insert failed");
         }
     }
 
     private void insertAllEmployees(Organisation organisation, SQLiteDatabase database)
+            throws DatabaseInsertException
     {
         List<Employee> allEmployees = organisation.getAllEmployees();
         for (Employee employee : allEmployees)
@@ -196,29 +212,38 @@ public class DatabaseHelper extends SQLiteOpenHelper
             long result = database.insert(TableNames.EMPLOYEES, null, values);
             if (result == -1)
             {
-                //TODO error occured!! do something!
+                throw new DatabaseInsertException("Employee insert failed");
             }
         }
     }
 
-    public Organisation selectOrganisation()
+    public Organisation selectOrganisation() throws DatabaseSelectException
     {
         SQLiteDatabase database = instance.getReadableDatabase();
 
-        Employee ceo = selectCEO(database);
-        List<Team> teams = selectTeams(database);
+        Employee ceo;
+        List<Team> teams;
 
-        database.close();
+        try
+        {
+            ceo = selectCEO(database);
+            teams = selectTeams(database);
+        }
+        finally
+        {
+            database.close();
+        }
+
         return new Organisation(ceo, teams);
     }
 
-    private Employee selectCEO(SQLiteDatabase database)
+    private Employee selectCEO(SQLiteDatabase database) throws DatabaseSelectException
     {
         String ceoID = selectCeoID(database);
         return selectEmployee(ceoID, true, database);
     }
 
-    private String selectCeoID(SQLiteDatabase database)
+    private String selectCeoID(SQLiteDatabase database) throws DatabaseSelectException
     {
         Cursor cursor = database.query(TableNames.ORGANISATION, // table
                 new String[]{OrganisationTableColumns.CEO_ID}, // column
@@ -228,13 +253,18 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
         if (cursor == null || !cursor.moveToNext())
         {
-            //TODO no results, return error
+            throw new DatabaseSelectException("Could not select CEO ID");
         }
 
-        return cursor.getString(cursor.getColumnIndex(OrganisationTableColumns.CEO_ID));
+        String ceoID = cursor.getString(cursor.getColumnIndex(OrganisationTableColumns.CEO_ID));
+
+        cursor.close();
+
+        return ceoID;
     }
 
     private Employee selectEmployee(String employeeId, boolean ceo, SQLiteDatabase database)
+            throws DatabaseSelectException
     {
         Cursor cursor = database.query(TableNames.EMPLOYEES, // table
                 new String[]{ // columns
@@ -250,7 +280,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
         if (cursor == null || !cursor.moveToNext())
         {
-            //TODO no results, return error
+            throw new DatabaseSelectException("Could not select Employee");
         }
 
         String id = cursor.getString(cursor.getColumnIndex(EmployeesTableColumns.ID));
@@ -262,10 +292,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
         boolean teamLeader = (cursor.getInt(cursor
                 .getColumnIndex(EmployeesTableColumns.TEAM_LEADER)) == 1) ? true : false;
 
+        cursor.close();
+
         return new Employee(id, firstName, lastName, role, imageURL, teamLeader, ceo);
     }
 
-    private List<Team> selectTeams(SQLiteDatabase database)
+    private List<Team> selectTeams(SQLiteDatabase database) throws DatabaseSelectException
     {
         List<Team> teams = new ArrayList<>();
 
@@ -280,6 +312,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     }
 
     private List<Employee> selectTeamMembers(String teamName, SQLiteDatabase database)
+            throws DatabaseSelectException
     {
         List<String> employeeIds = selectEmployeeIds(teamName, database);
 
@@ -293,6 +326,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     }
 
     private List<String> selectEmployeeIds(String teamName, SQLiteDatabase database)
+            throws DatabaseSelectException
     {
         Cursor cursor = database.query(TableNames.TEAM_MEMBERS, // table
                 new String[]{TeamMembersTableColumns.EMPLOYEE_ID}, // column
@@ -302,20 +336,23 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
         if (cursor == null || !cursor.moveToNext())
         {
-            //TODO no results, return error
+            throw new DatabaseSelectException("Could not select Employee IDs");
         }
 
         List<String> employeeIds = new ArrayList<>();
         do
         {
-            employeeIds.add(cursor.getString(cursor.getColumnIndex(TeamsTableColumns.NAME)));
+            employeeIds.add(cursor
+                    .getString(cursor.getColumnIndex(TeamMembersTableColumns.EMPLOYEE_ID)));
         }
         while (cursor.moveToNext());
+
+        cursor.close();
 
         return employeeIds;
     }
 
-    private List<String> selectTeamNames(SQLiteDatabase database)
+    private List<String> selectTeamNames(SQLiteDatabase database) throws DatabaseSelectException
     {
         Cursor cursor = database.query(TableNames.TEAMS, // table
                 new String[]{TeamsTableColumns.NAME}, // column
@@ -323,7 +360,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
         if (cursor == null || !cursor.moveToNext())
         {
-            //TODO no results, return error
+            throw new DatabaseSelectException("Could not select Team names");
         }
 
         List<String> teamNames = new ArrayList<>();
@@ -332,6 +369,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
             teamNames.add(cursor.getString(cursor.getColumnIndex(TeamsTableColumns.NAME)));
         }
         while (cursor.moveToNext());
+
+        cursor.close();
 
         return teamNames;
     }
