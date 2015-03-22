@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.sigute.organisationchart.R;
+import com.github.sigute.organisationchart.exceptions.ImageReadException;
 import com.github.sigute.organisationchart.utils.Storage;
 
 public class EmployeeDetailFragment extends Fragment
@@ -51,8 +52,15 @@ public class EmployeeDetailFragment extends Fragment
         ((TextView) rootView.findViewById(R.id.text_view_employee_surname)).setText(surname);
         ((TextView) rootView.findViewById(R.id.text_view_employee_role)).setText(role);
         ((TextView) rootView.findViewById(R.id.text_view_employee_id)).setText(id);
-        ((ImageView) rootView.findViewById(R.id.image_view_employee_photo))
-                .setImageBitmap(Storage.load(getActivity(), id));
+        try
+        {
+            ((ImageView) rootView.findViewById(R.id.image_view_employee_photo))
+                    .setImageBitmap(Storage.load(getActivity(), id));
+        }
+        catch (ImageReadException e)
+        {
+            //could not read image. just rely on the placeholder
+        }
 
         return rootView;
     }

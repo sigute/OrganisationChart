@@ -6,5 +6,6 @@
     <string name="error_server">Server problem occurred, server did not return correct response.</string>
     <string name="error_network_io">Network problem occurred.</string>
     <string name="error_server_response_read">Server problem occurred, could not read response.</string>
+    <string name="error_json_parsing">Server problem occurred, could not parse out JSON response.</string>
 
 </resources>

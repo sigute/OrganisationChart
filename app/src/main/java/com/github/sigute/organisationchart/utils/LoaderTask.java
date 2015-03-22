@@ -6,12 +6,15 @@ import android.os.AsyncTask;
 import android.support.v4.util.Pair;
 
 import com.github.sigute.organisationchart.R;
+import com.github.sigute.organisationchart.exceptions.ImageSaveException;
 import com.github.sigute.organisationchart.exceptions.NetworkIOException;
 import com.github.sigute.organisationchart.exceptions.NetworkUnavailableException;
 import com.github.sigute.organisationchart.exceptions.ServerException;
 import com.github.sigute.organisationchart.exceptions.ServerResponseReadException;
 import com.github.sigute.organisationchart.organisation.Employee;
 import com.github.sigute.organisationchart.organisation.Organisation;
+
+import org.json.JSONException;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -72,7 +75,15 @@ public class LoaderTask extends AsyncTask<Void, Void, Pair<Organisation, String>
             return new Pair<>(null, context.getString(R.string.error_server_response_read));
         }
 
-        Organisation organisation = JsonParser.parseOutJsonData(jsonString);
+        Organisation organisation = null;
+        try
+        {
+            organisation = JsonParser.parseOutJsonData(jsonString);
+        }
+        catch (JSONException e)
+        {
+            return new Pair<>(null, context.getString(R.string.error_json_parsing));
+        }
         try
         {
             setEmployeeImages(organisation);
@@ -94,7 +105,15 @@ public class LoaderTask extends AsyncTask<Void, Void, Pair<Organisation, String>
         {
             String imageUrl = employee.getImageURL();
             Bitmap bitmap = Server.retrieveBitmap(context, imageUrl);
-            Storage.save(context, bitmap, employee.getId());
+            try
+            {
+                Storage.save(context, bitmap, employee.getId());
+            }
+            catch (ImageSaveException e)
+            {
+                //could not save
+                //rely on the placeholder for now and only show employee data
+            }
         }
     }
 

@@ -16,33 +16,24 @@ import java.util.List;
  */
 public class JsonParser
 {
-    public static Organisation parseOutJsonData(String jsonString)
+    public static Organisation parseOutJsonData(String jsonString) throws JSONException
     {
         Employee ceo = null;
         List<Team> teams = null;
 
-        try
+        JSONArray json = new JSONArray(jsonString);
+
+        //parse out ceo
+        JSONObject ceoJsonObject = json.getJSONObject(0);
+        ceo = parseOutEmployee(ceoJsonObject, true);
+
+        teams = new ArrayList<Team>();
+        //parse out teams
+        for (int i = 1; i < json.length(); i++)
         {
-            JSONArray json = new JSONArray(jsonString);
-
-            //TODO check json length, should have CEO and at least one team? at least CEO?
-
-            //parse out ceo
-            JSONObject ceoJsonObject = json.getJSONObject(0);
-            ceo = parseOutEmployee(ceoJsonObject, true);
-
-            teams = new ArrayList<Team>();
-            //parse out teams
-            for (int i = 1; i < json.length(); i++)
-            {
-                JSONObject teamJsonObject = json.getJSONObject(i);
-                Team team = parseOutTeam(teamJsonObject);
-                teams.add(team);
-            }
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
+            JSONObject teamJsonObject = json.getJSONObject(i);
+            Team team = parseOutTeam(teamJsonObject);
+            teams.add(team);
         }
 
         return new Organisation(ceo, teams);
@@ -66,29 +57,15 @@ public class JsonParser
     }
 
     private static Employee parseOutEmployee(JSONObject personJsonObject, boolean ceo)
+            throws JSONException
     {
-        String id;
-        String firstName;
-        String lastName;
-        String role;
-        String profileImageURL;
+        String id = personJsonObject.getString("id");
+        String firstName = personJsonObject.getString("firstName");
+        String lastName = personJsonObject.getString("lastName");
+        String role = personJsonObject.getString("role");
+        String profileImageURL = personJsonObject.getString("profileImageURL");
+
         boolean teamLeader = false;
-
-        try
-        {
-            id = personJsonObject.getString("id");
-            firstName = personJsonObject.getString("firstName");
-            lastName = personJsonObject.getString("lastName");
-            role = personJsonObject.getString("role");
-            profileImageURL = personJsonObject.getString("profileImageURL");
-        }
-        catch (JSONException e)
-        {
-            //TODO throw a different exception?
-            // mandatory string missing! making assumption on mandatory...
-            return null;
-        }
-
         try
         {
             teamLeader = personJsonObject.getBoolean("teamLead");
