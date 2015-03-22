@@ -29,7 +29,7 @@ public class JsonParser
 
             //parse out ceo
             JSONObject ceoJsonObject = json.getJSONObject(0);
-            ceo = parseOutEmployee(ceoJsonObject);
+            ceo = parseOutEmployee(ceoJsonObject, true);
 
             teams = new ArrayList<Team>();
             //parse out teams
@@ -58,14 +58,14 @@ public class JsonParser
         {
             //parse out each person
             JSONObject personJsonObject = teamMembersJsonArray.getJSONObject(j);
-            Employee employee = parseOutEmployee(personJsonObject);
+            Employee employee = parseOutEmployee(personJsonObject, false);
             teamMembers.add(employee);
         }
 
         return new Team(teamName, teamMembers);
     }
 
-    private static Employee parseOutEmployee(JSONObject personJsonObject)
+    private static Employee parseOutEmployee(JSONObject personJsonObject, boolean ceo)
     {
         String id;
         String firstName;
@@ -98,6 +98,6 @@ public class JsonParser
             // no tag for teamLead, it's ok, false by default
         }
 
-        return new Employee(id, firstName, lastName, role, profileImageURL, teamLeader);
+        return new Employee(id, firstName, lastName, role, profileImageURL, teamLeader, ceo);
     }
 }

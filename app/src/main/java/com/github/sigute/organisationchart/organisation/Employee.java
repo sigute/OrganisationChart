@@ -11,6 +11,7 @@ public class Employee
     private String role;
     private String imageUrl;
     boolean teamLeader;
+    boolean ceo;
     //TODO deal with linking in profile image
 
     @SuppressWarnings("unused")
@@ -20,7 +21,7 @@ public class Employee
     }
 
     public Employee(String id, String firstName, String lastName, String role, String imageUrl,
-            boolean teamLeader)
+            boolean teamLeader, boolean ceo)
     {
         this.id = id;
         this.firstName = firstName;
@@ -28,6 +29,7 @@ public class Employee
         this.role = role;
         this.imageUrl = imageUrl;
         this.teamLeader = teamLeader;
+        this.ceo = ceo;
     }
 
     public String getId()
@@ -53,5 +55,10 @@ public class Employee
     public boolean isTeamLeader()
     {
         return teamLeader;
+    }
+
+    public boolean isCEO()
+    {
+        return ceo;
     }
 }

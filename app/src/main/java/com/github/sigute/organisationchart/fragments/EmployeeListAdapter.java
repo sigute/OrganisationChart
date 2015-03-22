@@ -7,12 +7,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.github.sigute.organisationchart.R;
+import com.github.sigute.organisationchart.organisation.Employee;
 
 import java.util.ArrayList;
 
-/**
- * Created by spikereborn on 21/03/2015.
- */
 public class EmployeeListAdapter extends ArrayAdapter<EmployeeListItem>
 {
     ArrayList<EmployeeListItem> listItems;
@@ -27,12 +25,12 @@ public class EmployeeListAdapter extends ArrayAdapter<EmployeeListItem>
     public View getView(int position, View convertView, ViewGroup parent)
     {
         View v = convertView;
-        final EmployeeListItem i = listItems.get(position);
-        if (i != null)
+        final EmployeeListItem listItem = listItems.get(position);
+        if (listItem != null)
         {
-            if (i.isHeader())
+            if (listItem.isHeader())
             {
-                EmployeeListItemHeader header = (EmployeeListItemHeader) i;
+                EmployeeListItemHeader header = (EmployeeListItemHeader) listItem;
                 v = View.inflate(getContext(), R.layout.list_item_header, null);
                 v.setOnClickListener(null);
                 v.setOnLongClickListener(null);
@@ -42,10 +40,23 @@ public class EmployeeListAdapter extends ArrayAdapter<EmployeeListItem>
             }
             else
             {
-                EmployeeListItemEmployee ei = (EmployeeListItemEmployee) i;
+                EmployeeListItemEmployee employeeListItemEmployee = (EmployeeListItemEmployee) listItem;
+                Employee employee = employeeListItemEmployee.getEmployee();
+
                 v = View.inflate(getContext(), R.layout.list_item_employee, null);
-                //TODO bind views for employee cell
-                //final TextView title = (TextView) v.findViewById(R.id.list_item_entry_title);
+                final TextView nameSurname = (TextView) v
+                        .findViewById(R.id.text_view_list_name_surname);
+                nameSurname.setText(employee.getFirstName() + " " + employee.getLastName());
+
+                final TextView roleTextView = (TextView) v.findViewById(R.id.text_view_list_role);
+                if (employee.isCEO() || employee.isTeamLeader())
+                {
+                    roleTextView.setText(employee.getRole());
+                }
+                else
+                {
+                    roleTextView.setVisibility(View.GONE);
+                }
             }
         }
         return v;
