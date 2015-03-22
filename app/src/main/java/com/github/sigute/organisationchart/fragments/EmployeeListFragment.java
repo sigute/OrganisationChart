@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.github.sigute.organisationchart.organisation.Employee;
-import com.github.sigute.organisationchart.utils.LoaderTask;
 import com.github.sigute.organisationchart.organisation.Organisation;
 import com.github.sigute.organisationchart.organisation.Team;
+import com.github.sigute.organisationchart.utils.LoaderTask;
 
 import java.util.ArrayList;
 

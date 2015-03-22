@@ -1,5 +1,6 @@
 package com.github.sigute.organisationchart.organisation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,5 +25,17 @@ public class Organisation
     public List<Team> getTeams()
     {
         return teams;
+    }
+
+    public List<Employee> getAllEmployees()
+    {
+        List<Employee> allEmployees = new ArrayList<>();
+        allEmployees.add(ceo);
+        for (Team team : teams)
+        {
+            allEmployees.add(team.getTeamLeader());
+            allEmployees.addAll(team.getTeamMembers());
+        }
+        return allEmployees;
     }
 }

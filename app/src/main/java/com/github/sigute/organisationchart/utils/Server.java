@@ -1,6 +1,8 @@
 package com.github.sigute.organisationchart.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -106,5 +108,75 @@ public class Server
             total.append(line);
         }
         return total.toString();
+    }
+
+    public static Bitmap retrieveBitmap(Context context, String imageURL)
+    {
+        ConnectivityManager connMgr = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected())
+        {
+            //TODO no network, throw exception or something
+        }
+
+        URL url;
+        try
+        {
+            url = new URL(imageURL);
+        }
+        catch (MalformedURLException e)
+        {
+            //TODO this might be wrong, as comes from third party! deal with it...
+            return null;
+        }
+
+        InputStream is = null;
+        try
+        {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(READ_TIMEOUT_MILISECONDS);
+            conn.setConnectTimeout(CONNECT_TIMEOUT_MILISECONDS);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+
+            conn.connect();
+            int response = conn.getResponseCode();
+            if (response != 200)
+            {
+                //TODO add exception or something
+                return null;
+            }
+            Log.d("debug!", "The response is: " + response);
+
+            is = conn.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(is);
+            return myBitmap;
+        }
+        catch (ProtocolException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (is != null)
+            {
+                try
+                {
+                    is.close();
+                }
+                catch (IOException e)
+                {
+                    //we tried, nothing else to do really...
+                }
+            }
+        }
+
+        //TODO add exception or something
+        return null;
     }
 }

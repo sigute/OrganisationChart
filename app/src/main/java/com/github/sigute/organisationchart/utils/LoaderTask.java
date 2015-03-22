@@ -1,9 +1,13 @@
 package com.github.sigute.organisationchart.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
+import com.github.sigute.organisationchart.organisation.Employee;
 import com.github.sigute.organisationchart.organisation.Organisation;
+
+import java.util.List;
 
 /**
  * Created by spikereborn on 21/03/2015.
@@ -37,7 +41,19 @@ public class LoaderTask extends AsyncTask<Void, Void, Organisation>
     {
         String jsonString = Server.retrieveJSONString(context);
         Organisation organisation = JsonParser.parseOutJsonData(jsonString);
+        setEmployeeImages(organisation);
         return organisation;
+    }
+
+    private void setEmployeeImages(Organisation organisation)
+    {
+        List<Employee> employees = organisation.getAllEmployees();
+        for (Employee employee : employees)
+        {
+            String imageUrl = employee.getImageURL();
+            Bitmap bitmap = Server.retrieveBitmap(context, imageUrl);
+            Storage.save(context, bitmap, employee.getId());
+        }
     }
 
     @Override

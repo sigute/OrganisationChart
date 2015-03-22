@@ -5,9 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.sigute.organisationchart.R;
+import com.github.sigute.organisationchart.utils.Storage;
 
 public class EmployeeDetailFragment extends Fragment
 {
@@ -47,11 +49,12 @@ public class EmployeeDetailFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.fragment_employee_detail, container, false);
 
-
         ((TextView) rootView.findViewById(R.id.text_view_employee_name)).setText(name);
         ((TextView) rootView.findViewById(R.id.text_view_employee_surname)).setText(surname);
         ((TextView) rootView.findViewById(R.id.text_view_employee_role)).setText(role);
         ((TextView) rootView.findViewById(R.id.text_view_employee_id)).setText(id);
+        ((ImageView) rootView.findViewById(R.id.image_view_employee_photo))
+                .setImageBitmap(Storage.load(getActivity(), id));
 
         return rootView;
     }

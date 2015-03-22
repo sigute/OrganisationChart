@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">OrganisationChart</string>
-    <string name="title_employee_detail">Employee Detail</string>
+    <string name="title_employee_detail">Employee</string>
 </resources>
