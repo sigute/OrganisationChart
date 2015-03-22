@@ -39,9 +39,12 @@ public class LoaderTask extends AsyncTask<Void, Void, Organisation>
     @Override
     protected Organisation doInBackground(Void[] voids)
     {
+        //TODO before trying online, see whether can retrieve organisation from database
+
         String jsonString = Server.retrieveJSONString(context);
         Organisation organisation = JsonParser.parseOutJsonData(jsonString);
         setEmployeeImages(organisation);
+        DatabaseHelper.getInstance(context).insertOrganisation(organisation);
         return organisation;
     }
 
