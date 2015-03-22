@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">OrganisationChart</string>
     <string name="title_employee_detail">Employee</string>
+
+    <string name="error_network_unavailable">Network is currently unavailable.</string>
+    <string name="error_server">Server problem occurred, server did not return correct response.</string>
+    <string name="error_network_io">Network problem occurred.</string>
+    <string name="error_server_response_read">Server problem occurred, could not read response.</string>
+
 </resources>

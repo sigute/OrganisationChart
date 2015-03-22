@@ -3,6 +3,8 @@ package com.github.sigute.organisationchart.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.github.sigute.organisationchart.R;
 import com.github.sigute.organisationchart.fragments.EmployeeDetailFragment;
@@ -21,11 +23,16 @@ public class EmployeeListActivity extends ActionBarActivity
      */
     private boolean mTwoPane;
 
+    private TextView errorView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_list);
+
+        errorView = (TextView) findViewById(R.id.text_view_employee_list_error);
+        errorView.setVisibility(View.GONE);
 
         if (findViewById(R.id.employee_detail_container) != null)
         {
@@ -66,5 +73,14 @@ public class EmployeeListActivity extends ActionBarActivity
             detailIntent.putExtra(EmployeeDetailFragment.EmployeeKeys.ID, employee.getId());
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public void onFailure(String errorMessage)
+    {
+        errorView.setText(errorMessage);
+        errorView.setVisibility(View.VISIBLE);
+
+        findViewById(R.id.employee_list).setVisibility(View.GONE);
     }
 }

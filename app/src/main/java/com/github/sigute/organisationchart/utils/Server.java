@@ -5,7 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
+
+import com.github.sigute.organisationchart.exceptions.NetworkIOException;
+import com.github.sigute.organisationchart.exceptions.NetworkUnavailableException;
+import com.github.sigute.organisationchart.exceptions.ServerException;
+import com.github.sigute.organisationchart.exceptions.ServerResponseReadException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 /**
@@ -22,19 +25,15 @@ import java.net.URL;
 public class Server
 {
     private static final String SERVER_URL = "http://mubaloo.com/dev/developerTestResources/team.json";
-    private static final int READ_TIMEOUT_MILISECONDS = 10 * 1000;
-    private static final int CONNECT_TIMEOUT_MILISECONDS = 15 * 1000;
+    private static final int READ_TIMEOUT_MILLISECONDS = 10 * 1000;
+    private static final int CONNECT_TIMEOUT_MILLISECONDS = 15 * 1000;
 
 
     public static String retrieveJSONString(Context context)
+            throws NetworkUnavailableException, ServerException, NetworkIOException,
+            ServerResponseReadException
     {
-        ConnectivityManager connMgr = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo == null || !networkInfo.isConnected())
-        {
-            //TODO no network, throw exception or something
-        }
+        checkConnectivity(context);
 
         URL url;
         try
@@ -53,31 +52,32 @@ public class Server
         InputStream is = null;
         try
         {
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(READ_TIMEOUT_MILISECONDS);
-            conn.setConnectTimeout(CONNECT_TIMEOUT_MILISECONDS);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-
-            conn.connect();
-            int response = conn.getResponseCode();
-            if (response != 200)
-            {
-                //TODO add exception or something
-                return "";
-            }
-            Log.d("debug!", "The response is: " + response);
-
-            is = conn.getInputStream();
-            return convertToString(is);
-        }
-        catch (ProtocolException e)
-        {
-            e.printStackTrace();
+            is = getInputStream(url);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            if (is != null)
+            {
+                try
+                {
+                    is.close();
+                }
+                catch (IOException e2)
+                {
+                    //we tried, nothing else to do really...
+                }
+            }
+
+            throw new NetworkIOException(e.getMessage());
+        }
+
+        try
+        {
+            return convertToString(is);
+        }
+        catch (IOException e)
+        {
+            throw new ServerResponseReadException(e.getMessage());
         }
         finally
         {
@@ -93,9 +93,35 @@ public class Server
                 }
             }
         }
+    }
 
-        //TODO add exception or something
-        return "";
+    private static InputStream getInputStream(URL url) throws IOException, ServerException
+    {
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setReadTimeout(READ_TIMEOUT_MILLISECONDS);
+        conn.setConnectTimeout(CONNECT_TIMEOUT_MILLISECONDS);
+        conn.setRequestMethod("GET");
+        conn.setDoInput(true);
+
+        conn.connect();
+        int response = conn.getResponseCode();
+        if (response != 200)
+        {
+            throw new ServerException("" + response);
+        }
+
+        return conn.getInputStream();
+    }
+
+    private static void checkConnectivity(Context context) throws NetworkUnavailableException
+    {
+        ConnectivityManager connMgr = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected())
+        {
+            throw new NetworkUnavailableException("Network currently unavailable");
+        }
     }
 
     private static String convertToString(InputStream stream) throws IOException
@@ -111,57 +137,19 @@ public class Server
     }
 
     public static Bitmap retrieveBitmap(Context context, String imageURL)
+            throws NetworkUnavailableException, MalformedURLException, ServerException,
+            NetworkIOException, ServerResponseReadException
     {
-        ConnectivityManager connMgr = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo == null || !networkInfo.isConnected())
-        {
-            //TODO no network, throw exception or something
-        }
+        checkConnectivity(context);
 
-        URL url;
-        try
-        {
-            url = new URL(imageURL);
-        }
-        catch (MalformedURLException e)
-        {
-            //TODO this might be wrong, as comes from third party! deal with it...
-            return null;
-        }
+        URL url = new URL(imageURL);
 
         InputStream is = null;
         try
         {
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(READ_TIMEOUT_MILISECONDS);
-            conn.setConnectTimeout(CONNECT_TIMEOUT_MILISECONDS);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-
-            conn.connect();
-            int response = conn.getResponseCode();
-            if (response != 200)
-            {
-                //TODO add exception or something
-                return null;
-            }
-            Log.d("debug!", "The response is: " + response);
-
-            is = conn.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(is);
-            return myBitmap;
-        }
-        catch (ProtocolException e)
-        {
-            e.printStackTrace();
+            is = getInputStream(url);
         }
         catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
         {
             if (is != null)
             {
@@ -169,14 +157,31 @@ public class Server
                 {
                     is.close();
                 }
-                catch (IOException e)
+                catch (IOException e2)
                 {
                     //we tried, nothing else to do really...
                 }
             }
+
+            throw new NetworkIOException(e.getMessage());
         }
 
-        //TODO add exception or something
-        return null;
+        Bitmap image = BitmapFactory.decodeStream(is);
+
+        try
+        {
+            is.close();
+        }
+        catch (IOException e)
+        {
+            //we tried, nothing else to do really...
+        }
+
+        if (image == null)
+        {
+            throw new ServerResponseReadException("Could not read bitmap");
+        }
+
+        return image;
     }
 }

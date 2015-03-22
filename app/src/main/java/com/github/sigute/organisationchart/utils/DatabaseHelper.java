@@ -135,7 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         for (Team team : allTeams)
         {
             insertTeamName(team.getName(), database);
-            List<Employee> allTeamMembers = team.getTeamMembers();
+            List<Employee> allTeamMembers = new ArrayList<Employee>(team.getTeamMembers());
             allTeamMembers.add(team.getTeamLeader());
 
             insertTeamMembers(allTeamMembers, team.getName(), database);

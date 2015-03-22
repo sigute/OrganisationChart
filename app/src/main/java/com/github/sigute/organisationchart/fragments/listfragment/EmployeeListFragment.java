@@ -45,6 +45,8 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
          * Callback for when an item has been selected.
          */
         public void onItemSelected(Employee employee);
+
+        public void onFailure(String errorMessage);
     }
 
     /**
@@ -55,6 +57,11 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
     {
         @Override
         public void onItemSelected(Employee employee)
+        {
+        }
+
+        @Override
+        public void onFailure(String errorMessage)
         {
         }
     };
@@ -176,7 +183,6 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
     @Override
     public void onTaskFinished(Organisation organisation)
     {
-        //TODO show  error if needed
         listItems = new ArrayList<>();
         listItems.add(new EmployeeListItemEmployee(organisation.getCEO()));
         for (Team team : organisation.getTeams())
@@ -191,5 +197,11 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
 
         EmployeeListAdapter adapter = new EmployeeListAdapter(getActivity(), listItems);
         setListAdapter(adapter);
+    }
+
+    @Override
+    public void onTaskFailure(String errorMessage)
+    {
+        mCallbacks.onFailure(errorMessage);
     }
 }
