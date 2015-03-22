@@ -35,6 +35,7 @@ public class EmployeeListAdapter extends ArrayAdapter<EmployeeListItem>
                 v.setOnClickListener(null);
                 v.setOnLongClickListener(null);
                 v.setLongClickable(false);
+                v.setClickable(false);
                 final TextView sectionView = (TextView) v.findViewById(R.id.text_view_header);
                 sectionView.setText(header.getHeaderTitle());
             }

@@ -1,57 +1,74 @@
-<RelativeLayout
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:weightSum="2">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/image_view_photo"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:padding="20dp"
-        android:src="@drawable/employee_photo_placeholder"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="@color/primary"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_view_name"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/image_view_photo"
-        android:layout_toEndOf="@+id/image_view_photo"
-        android:text="Name"
-        android:paddingTop="10dp"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/primary_text"
-        tools:ignore="HardcodedText"
-        />
+        <ImageView
+            android:id="@+id/image_view_employee_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:background="@color/light_text"
+            android:padding="5dp"
+            android:src="@drawable/employee_photo_placeholder"/>
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_view_surname"
-        android:text="Surname"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/primary_text"
-        tools:ignore="HardcodedText"
-        android:layout_below="@+id/text_view_name"
-        android:layout_toRightOf="@+id/image_view_photo"
-        android:layout_toEndOf="@+id/image_view_photo"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Employee ID: 001"
-        android:id="@+id/textView"
-        tools:ignore="HardcodedText"
-        android:textColor="@color/secondary_text"
-        android:layout_alignBottom="@+id/image_view_photo"
-        android:layout_toRightOf="@+id/image_view_photo"
-        android:layout_toEndOf="@+id/image_view_photo"/>
+        <TextView
+            android:id="@+id/text_view_employee_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/primary_text"
+            tools:ignore="HardcodedText"
+            />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/text_view_employee_surname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Surname"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/primary_text"
+            tools:ignore="HardcodedText"/>
 
+        <TextView
+            android:id="@+id/text_view_employee_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/primary_light"
+            android:text="Role"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/accent"/>
 
+        <TextView
+            android:id="@+id/text_view_employee_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="001"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/secondary_text"
+            tools:ignore="HardcodedText"/>
+    </LinearLayout>
+</LinearLayout>
