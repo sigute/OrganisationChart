@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.github.sigute.organisationchart.R;
 import com.github.sigute.organisationchart.fragments.EmployeeDetailFragment;
-import com.github.sigute.organisationchart.fragments.EmployeeListFragment;
+import com.github.sigute.organisationchart.fragments.listfragment.EmployeeListFragment;
 import com.github.sigute.organisationchart.organisation.Employee;
 
 

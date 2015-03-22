@@ -1,4 +1,4 @@
-package com.github.sigute.organisationchart.fragments;
+package com.github.sigute.organisationchart.fragments.listfragment;
 
 import android.app.Activity;
 import android.os.Bundle;

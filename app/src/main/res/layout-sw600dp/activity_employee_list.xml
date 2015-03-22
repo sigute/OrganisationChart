@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/employee_list"
-        android:name="com.github.sigute.organisationchart.fragments.EmployeeListFragment"
+        android:name="com.github.sigute.organisationchart.fragments.listfragment.EmployeeListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
