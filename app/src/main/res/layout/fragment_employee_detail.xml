@@ -3,64 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal"
-    android:weightSum="2">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:background="@color/primary"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/image_view_employee_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="20dp"
-            android:background="@color/light_text"
-            android:padding="5dp"
-            android:src="@drawable/employee_photo_placeholder"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="20dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        >
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/text_view_employee_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:text="Name"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/primary_text"
-            tools:ignore="HardcodedText"
-            />
+            android:textColor="@color/light_text"
+            tools:ignore="HardcodedText"/>
 
         <TextView
             android:id="@+id/text_view_employee_surname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/text_view_employee_name"
             android:text="Surname"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/light_text"
             tools:ignore="HardcodedText"/>
+
+        <ImageView
+            android:id="@+id/image_view_employee_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/light_text"
+            android:padding="10dp"
+            android:src="@drawable/employee_photo_placeholder"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="right"
+        android:orientation="vertical"
+        >
 
         <TextView
             android:id="@+id/text_view_employee_role"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@color/primary_light"
             android:text="Role"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/accent"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/primary_text"/>
 
         <TextView
             android:id="@+id/text_view_employee_id"
