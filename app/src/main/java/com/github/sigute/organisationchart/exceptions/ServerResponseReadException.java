@@ -1,7 +1,10 @@
 package com.github.sigute.organisationchart.exceptions;
 
+
 /**
- * Created by spikereborn on 22/03/2015.
+ * This exception is used when the response received from server cannot not be read.
+ *
+ * @author Sigute
  */
 public class ServerResponseReadException extends Exception
 {

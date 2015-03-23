@@ -1,7 +1,10 @@
 package com.github.sigute.organisationchart.exceptions;
 
+
 /**
- * Created by spikereborn on 22/03/2015.
+ * This exception is used when network is not available.
+ *
+ * @author Sigute
  */
 public class NetworkUnavailableException extends Exception
 {

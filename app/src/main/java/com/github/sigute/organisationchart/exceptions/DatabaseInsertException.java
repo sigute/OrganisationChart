@@ -1,7 +1,9 @@
 package com.github.sigute.organisationchart.exceptions;
 
 /**
- * Created by spikereborn on 22/03/2015.
+ * This exception is used when database insert fails.
+ *
+ * @author Sigute
  */
 public class DatabaseInsertException extends Exception
 {

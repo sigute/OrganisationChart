@@ -11,9 +11,14 @@ import com.github.sigute.organisationchart.fragments.EmployeeDetailFragment;
 import com.github.sigute.organisationchart.fragments.listfragment.EmployeeListFragment;
 import com.github.sigute.organisationchart.organisation.Employee;
 
-
+/**
+ * Activity shows list fragment and handles navigation to detail activity.
+ * Errors while retrieving data are displayed in this activity.
+ *
+ * @author Sigute
+ */
 public class EmployeeListActivity extends ActionBarActivity
-        implements EmployeeListFragment.Callbacks
+        implements EmployeeListFragment.EmployeeListFragmentCallbacks
 {
     private TextView errorView;
 

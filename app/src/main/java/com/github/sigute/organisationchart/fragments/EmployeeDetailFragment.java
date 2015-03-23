@@ -12,6 +12,12 @@ import com.github.sigute.organisationchart.R;
 import com.github.sigute.organisationchart.exceptions.ImageReadException;
 import com.github.sigute.organisationchart.utils.Storage;
 
+
+/**
+ * This fragment displays the employee details. .
+ *
+ * @author Sigute
+ */
 public class EmployeeDetailFragment extends Fragment
 {
     public class EmployeeKeys

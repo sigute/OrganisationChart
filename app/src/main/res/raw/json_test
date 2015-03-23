@@ -1,0 +1,48 @@
+[
+	{
+		"id" : "001",
+		"firstName" : "Mark",
+		"lastName" : "Mason",
+		"role" : "CEO",
+		"profileImageURL" : "http://mubaloo.com/dev/developerTestResources/profilePlaceholder.png"
+	},
+	{
+		"teamName" : "iOS",
+		"members" : [
+			{
+				"id" : "002",
+				"firstName" : "Olly",
+				"lastName" : "Berry",
+				"role" : "iOS Team Lead",
+				"profileImageURL" : "http://mubaloo.com/dev/developerTestResources/profilePlaceholder.png",
+				"teamLead" : true
+			},
+			{
+				"id" : "003",
+				"firstName" : "James",
+				"lastName" : "Frost",
+				"role" : "iOS Developer",
+				"profileImageURL" : "http://mubaloo.com/dev/developerTestResources/profilePlaceholder.png"
+			}
+		]
+	},
+	{
+		"teamName" : "Android",
+		"members" : [{
+				"id" : "011",
+				"firstName" : "David",
+				"lastName" : "Branton",
+				"role" : "Android Team Lead",
+				"profileImageURL" : "http://mubaloo.com/dev/developerTestResources/profilePlaceholder.png",
+				"teamLead" : true
+			},
+			{
+				"id" : "012",
+				"firstName" : "Dre",
+				"lastName" : "Pilipczuk",
+				"role" : "Android Developer",
+				"profileImageURL" : "http://mubaloo.com/dev/developerTestResources/profilePlaceholder.png"
+			}
+		]
+	}
+]

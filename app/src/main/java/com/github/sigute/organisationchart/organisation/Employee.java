@@ -1,7 +1,9 @@
 package com.github.sigute.organisationchart.organisation;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * This class represents an employee and holds employee attributes.
+ *
+ * @auther Sigute
  */
 public class Employee
 {

@@ -9,6 +9,11 @@ import android.view.MenuItem;
 import com.github.sigute.organisationchart.R;
 import com.github.sigute.organisationchart.fragments.EmployeeDetailFragment;
 
+/**
+ * Activity shows detail fragment and handles navigation to list activity.
+ *
+ * @author Sigute
+ */
 public class EmployeeDetailActivity extends ActionBarActivity
 {
     @Override

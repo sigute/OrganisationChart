@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * This class represent organisation.
+ * It holds CEO, teams, etc.
+ *
+ * @author Sigute
  */
 public class Organisation
 {

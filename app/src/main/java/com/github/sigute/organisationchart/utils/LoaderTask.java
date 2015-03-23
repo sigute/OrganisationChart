@@ -22,10 +22,15 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * Loader task - retrieves data, parses JSON, checks offline database if there is no network.
+ *
+ * @author Sigute
  */
 public class LoaderTask extends AsyncTask<Void, Void, Pair<Organisation, String>>
 {
+    /**
+     * Implement this listener to get feedback from the task.
+     */
     public interface TaskListener
     {
         void onTaskStarted();

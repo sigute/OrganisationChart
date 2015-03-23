@@ -1,7 +1,9 @@
 package com.github.sigute.organisationchart.fragments.listfragment;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * Headers, holds its own title.
+ *
+ * @author Sigute
  */
 public class EmployeeListItemHeader implements EmployeeListItem
 {

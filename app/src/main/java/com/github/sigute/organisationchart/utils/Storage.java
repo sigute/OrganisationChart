@@ -14,10 +14,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by spikereborn on 22/03/2015.
+ * Helper class to store and retrieve images.
+ *
+ * @author Sigute
  */
 public class Storage
 {
+    /**
+     * Image ID is used to save an image. Same id must be provided to retrieve an image later.
+     * Recommend using employee id.
+     */
     public static void save(Context context, Bitmap bitmapImage, String imageID)
             throws ImageSaveException
     {

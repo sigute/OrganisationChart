@@ -20,14 +20,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * Helper class to retrieve data from the server.
+ *
+ * @author Sigute
  */
 public class Server
 {
     private static final String SERVER_URL = "http://mubaloo.com/dev/developerTestResources/team.json";
     private static final int READ_TIMEOUT_MILLISECONDS = 10 * 1000;
     private static final int CONNECT_TIMEOUT_MILLISECONDS = 15 * 1000;
-
 
     public static String retrieveJSONString(Context context)
             throws NetworkUnavailableException, ServerException, NetworkIOException,

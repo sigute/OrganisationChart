@@ -13,34 +13,34 @@ import com.github.sigute.organisationchart.utils.LoaderTask;
 
 import java.util.ArrayList;
 
+
+/**
+ * This fragment retrieves and shows and list of employees.
+ *
+ * @author Sigute
+ */
 public class EmployeeListFragment extends ListFragment implements LoaderTask.TaskListener
 {
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private EmployeeListFragmentCallbacks callbacks = sDummyEmployeeListFragmentCallbacks;
 
     /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
+     * Must implement this! Returns data from fragment.
      */
-    public interface Callbacks
+    public interface EmployeeListFragmentCallbacks
     {
         /**
          * Callback for when an item has been selected.
          */
         public void onItemSelected(Employee employee);
 
+        /**
+         * Callback for when an error occurs.
+         */
         public void onFailure(String errorMessage);
     }
 
-    /**
-     * A dummy implementation of the {@link Callbacks} interface that does
-     * nothing. Used only when this fragment is not attached to an activity.
-     */
-    private static Callbacks sDummyCallbacks = new Callbacks()
+    // A dummy implementation used only when this fragment is not attached to an activity. Does not do anything.
+    private static EmployeeListFragmentCallbacks sDummyEmployeeListFragmentCallbacks = new EmployeeListFragmentCallbacks()
     {
         @Override
         public void onItemSelected(Employee employee)
@@ -55,10 +55,6 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
 
     ArrayList<EmployeeListItem> listItems;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public EmployeeListFragment()
     {
     }
@@ -76,13 +72,12 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
     {
         super.onAttach(activity);
 
-        // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks))
+        if (!(activity instanceof EmployeeListFragmentCallbacks))
         {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
 
-        mCallbacks = (Callbacks) activity;
+        callbacks = (EmployeeListFragmentCallbacks) activity;
     }
 
     @Override
@@ -91,7 +86,7 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
         super.onDetach();
 
         // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
+        callbacks = sDummyEmployeeListFragmentCallbacks;
     }
 
     @Override
@@ -99,14 +94,14 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
     {
         super.onListItemClick(listView, view, position, id);
 
-        EmployeeListItem listItem = (EmployeeListItem) listItems.get(position);
+        EmployeeListItem listItem = listItems.get(position);
         if (listItem.isHeader())
         {
             //should not get called here anyway, as set to non-clickable in adapter, but just making sure
             return;
         }
 
-        mCallbacks.onItemSelected(((EmployeeListItemEmployee) listItem).getEmployee());
+        callbacks.onItemSelected(((EmployeeListItemEmployee) listItem).getEmployee());
     }
 
     @Override
@@ -137,6 +132,6 @@ public class EmployeeListFragment extends ListFragment implements LoaderTask.Tas
     @Override
     public void onTaskFailure(String errorMessage)
     {
-        mCallbacks.onFailure(errorMessage);
+        callbacks.onFailure(errorMessage);
     }
 }

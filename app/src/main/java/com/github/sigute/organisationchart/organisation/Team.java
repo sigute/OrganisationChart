@@ -3,7 +3,9 @@ package com.github.sigute.organisationchart.organisation;
 import java.util.List;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * This class represent team. Each team has its attributes, such as name, leader, members, etc.
+ *
+ * @author Sigute
  */
 public class Team
 {

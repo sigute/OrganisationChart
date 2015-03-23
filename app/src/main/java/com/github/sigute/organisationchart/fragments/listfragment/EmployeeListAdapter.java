@@ -11,6 +11,11 @@ import com.github.sigute.organisationchart.organisation.Employee;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for Employee list.
+ *
+ * @author Sigute
+ */
 public class EmployeeListAdapter extends ArrayAdapter<EmployeeListItem>
 {
     ArrayList<EmployeeListItem> listItems;

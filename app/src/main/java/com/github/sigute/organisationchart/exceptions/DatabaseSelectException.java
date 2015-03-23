@@ -1,7 +1,10 @@
 package com.github.sigute.organisationchart.exceptions;
 
+
 /**
- * Created by spikereborn on 22/03/2015.
+ * This exception is used when database read fails.
+ *
+ * @author Sigute
  */
 public class DatabaseSelectException extends Exception
 {

@@ -16,7 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by spikereborn on 22/03/2015.
+ * Database helper - provides methods to insert and select organisation.
+ * Helps to ensure only once instance of database is open at a time.
+ * Currently only one organisation record is stored, with previous record deleted when new one is inserted.
+ * Methods are synchronized to ensure there are no caseswith clashes.
+ *
+ * @author Sigute
  */
 public class DatabaseHelper extends SQLiteOpenHelper
 {
@@ -120,7 +125,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
     }
 
-    public void insertOrganisation(Organisation organisation) throws DatabaseInsertException
+    public synchronized void insertOrganisation(Organisation organisation)
+            throws DatabaseInsertException
     {
         SQLiteDatabase database = instance.getWritableDatabase();
 
@@ -217,7 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         }
     }
 
-    public Organisation selectOrganisation() throws DatabaseSelectException
+    public synchronized Organisation selectOrganisation() throws DatabaseSelectException
     {
         SQLiteDatabase database = instance.getReadableDatabase();
 

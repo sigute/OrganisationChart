@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * Helper class to parse out Organisation out of JSON.
+ *
+ * @author Sigute
  */
 public class JsonParser
 {

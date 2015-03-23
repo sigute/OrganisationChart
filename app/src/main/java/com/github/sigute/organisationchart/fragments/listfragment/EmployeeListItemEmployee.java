@@ -3,7 +3,9 @@ package com.github.sigute.organisationchart.fragments.listfragment;
 import com.github.sigute.organisationchart.organisation.Employee;
 
 /**
- * Created by spikereborn on 21/03/2015.
+ * Holds an employee. Not a header.
+ *
+ * @author Sigute
  */
 public class EmployeeListItemEmployee implements EmployeeListItem
 {
