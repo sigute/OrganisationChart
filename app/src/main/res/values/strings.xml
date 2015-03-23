@@ -8,4 +8,12 @@
     <string name="error_server_response_read">Server problem occurred, could not read response.</string>
     <string name="error_json_parsing">Server problem occurred, could not parse out JSON response.</string>
 
+    <string name="placeholder_header">Header</string>
+    <string name="placeholder_error">Error</string>
+    <string name="placeholder_name_surname">Name Surname</string>
+    <string name="placeholder_role">Role</string>
+    <string name="placeholder_id">001</string>
+    <string name="placeholder_name">Name</string>
+    <string name="placeholder_surname">Surname</string>
+
 </resources>

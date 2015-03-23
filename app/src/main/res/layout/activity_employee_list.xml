@@ -20,7 +20,7 @@
         android:layout_margin="15dp"
         android:background="@color/accent"
         android:padding="10dp"
-        android:text="Medium Text"
+        android:text="@string/placeholder_error"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/primary_dark"/>
 

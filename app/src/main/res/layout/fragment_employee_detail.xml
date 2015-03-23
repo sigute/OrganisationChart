@@ -1,6 +1,5 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
@@ -17,10 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="Name"
+            android:text="@string/placeholder_name"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/light_text"
-            tools:ignore="HardcodedText"/>
+            android:textColor="@color/light_text"/>
 
         <TextView
             android:id="@+id/text_view_employee_surname"
@@ -28,10 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/text_view_employee_name"
-            android:text="Surname"
+            android:text="@string/placeholder_surname"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/light_text"
-            tools:ignore="HardcodedText"/>
+            android:textColor="@color/light_text"/>
 
         <ImageView
             android:id="@+id/image_view_employee_photo"
@@ -59,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="Role"
+            android:text="@string/placeholder_role"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/primary_text"/>
 
@@ -67,9 +64,8 @@
             android:id="@+id/text_view_employee_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="001"
+            android:text="@string/placeholder_id"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/secondary_text"
-            tools:ignore="HardcodedText"/>
+            android:textColor="@color/secondary_text"/>
     </LinearLayout>
 </LinearLayout>
