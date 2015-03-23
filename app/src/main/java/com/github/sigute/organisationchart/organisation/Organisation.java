@@ -20,6 +20,10 @@ public class Organisation
         //should not be called directly
     }
 
+    /**
+     * @param ceo   ceo of organisation, cannot be null
+     * @param teams teams present in the organisation, cannot be null or empty
+     */
     public Organisation(Employee ceo, List<Team> teams)
     {
         if (ceo == null)
